@@ -42,7 +42,7 @@ golf-ghost/
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/greggjuri/golf-ghost
 cd golf-ghost
 ```
 
@@ -189,7 +189,7 @@ Feel free to submit issues, fork the repository, and create pull requests for an
 
 ## License
 
-MIT License - feel free to use this for any purpose.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Future Enhancements
 
