@@ -200,33 +200,44 @@ class GenerateTab:
     
     def create_table_header(self):
         """Create the scorecard table header"""
-        header_row = tk.Frame(
+        # Clear any existing header
+        if hasattr(self, 'header_row') and self.header_row:
+            self.header_row.destroy()
+        
+        self.header_row = tk.Frame(
             self.scrollable_frame,
             bg=self.theme.colors['bg_secondary'],
             height=40
         )
-        header_row.pack(fill='x', pady=(0, 2))
-        header_row.pack_propagate(False)
+        self.header_row.pack(fill='x', pady=(0, 2))
+        self.header_row.pack_propagate(False)
         
-        headers = [
-            ('HOLE', 60),
-            ('YDS', 70),
-            ('PAR', 60),
-            ('HCP', 60),
-            ('STR', 70),
-            ('GROSS', 80),
-            ('NET', 80)
-        ]
+        # Define column widths (proportions that add up to 1.0)
+        self.column_weights = {
+            'hole': 0.10,    # 10%
+            'yds': 0.12,     # 12%
+            'par': 0.10,     # 10%
+            'hcp': 0.10,     # 10%
+            'str': 0.10,     # 10%
+            'gross': 0.24,   # 24%
+            'net': 0.24      # 24%
+        }
         
-        for header_text, width in headers:
+        headers = ['HOLE', 'YDS', 'PAR', 'HCP', 'STR', 'GROSS', 'NET']
+        weights = list(self.column_weights.values())
+        
+        for header_text, weight in zip(headers, weights):
             header = tk.Label(
-                header_row, text=header_text,
+                self.header_row, text=header_text,
                 font=('Arial', 9, 'bold'),
                 bg=self.theme.colors['bg_secondary'],
                 fg=self.theme.colors['text_muted'],
-                width=width//8
+                anchor='center'
             )
-            header.pack(side='left', padx=2)
+            header.place(relx=sum(weights[:headers.index(header_text)]), 
+                        rely=0, 
+                        relwidth=weight, 
+                        relheight=1.0)
     
     def load_selected_course(self, event):
         """Load and display course information"""
@@ -327,7 +338,7 @@ class GenerateTab:
                 row.destroy()
             self.scorecard_rows = []
             
-            # Recreate header
+            # Recreate header (only once)
             self.create_table_header()
             
             # Display scores
@@ -399,29 +410,38 @@ class GenerateTab:
         
         font_style = ('Arial', 10, 'bold') if is_total else ('Arial', 10)
         
+        # Prepare values - use empty string for missing data
         values = [
-            (str(hole), 60),
-            (str(yardage) if yardage else '', 70),
-            (str(par) if par else '', 60),
-            (str(hcp) if hcp else '', 60),
-            (str(strokes) if strokes else '', 70),
-            (str(gross), 80),
-            (str(net), 80)
+            str(hole),
+            str(yardage) if yardage else '',
+            str(par) if par else '',
+            str(hcp) if hcp else '',
+            str(strokes) if strokes else '',
+            str(gross),
+            str(net)
         ]
         
-        for i, (value, width) in enumerate(values):
-            fg_color = color if i >= 5 else self.theme.colors['text_primary']
-            if is_total and i == 0:
-                fg_color = self.theme.colors['text_primary']
+        weights = list(self.column_weights.values())
+        
+        for i, value in enumerate(values):
+            # Determine color
+            fg_color = self.theme.colors['text_primary']
+            if i >= 5 and not is_total:  # GROSS and NET columns for regular holes
+                fg_color = color
+            elif is_total and i >= 5:  # GROSS and NET for totals
+                fg_color = color
             
             label = tk.Label(
                 row, text=value,
                 font=font_style,
                 bg=bg_color,
                 fg=fg_color,
-                width=width//8
+                anchor='center'
             )
-            label.pack(side='left', padx=2)
+            label.place(relx=sum(weights[:i]), 
+                       rely=0, 
+                       relwidth=weights[i], 
+                       relheight=1.0)
     
     def refresh_course_list(self):
         """Refresh the course dropdown list"""
