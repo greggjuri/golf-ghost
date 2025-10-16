@@ -140,16 +140,38 @@ class ManageTab:
         )
         label.pack(anchor='w', pady=(0, 5))
         
+        # Create frame for border effect
+        entry_border = tk.Frame(container, bg=self.theme.colors['border'], padx=1, pady=1)
+        entry_border.pack(fill='x')
+        
         entry = tk.Entry(
-            container, textvariable=var,
-            font=('Arial', 10),
-            bg=self.theme.colors['bg_secondary'],
+            entry_border, textvariable=var,
+            font=('Arial', 11),
+            bg=self.theme.colors['bg_primary'],
             fg=self.theme.colors['text_primary'],
-            insertbackground=self.theme.colors['text_primary'],
+            insertbackground=self.theme.colors['accent_cyan'],
             relief='flat',
             borderwidth=0
         )
         entry.pack(fill='x', ipady=8, ipadx=12)
+        
+        # Add hover effects
+        def on_enter(e):
+            entry_border.config(bg=self.theme.colors['accent_blue'])
+        
+        def on_leave(e):
+            entry_border.config(bg=self.theme.colors['border'])
+        
+        def on_focus_in(e):
+            entry_border.config(bg=self.theme.colors['accent_cyan'])
+        
+        def on_focus_out(e):
+            entry_border.config(bg=self.theme.colors['border'])
+        
+        entry.bind('<Enter>', on_enter)
+        entry.bind('<Leave>', on_leave)
+        entry.bind('<FocusIn>', on_focus_in)
+        entry.bind('<FocusOut>', on_focus_out)
         
         return entry
     
@@ -212,18 +234,41 @@ class ManageTab:
         )
         label.pack(anchor='w', pady=(0, 3))
         
+        # Create border frame
+        entry_border = tk.Frame(field_frame, bg=self.theme.colors['border'], padx=1, pady=1)
+        entry_border.pack(fill='x')
+        
         entry = tk.Entry(
-            field_frame, textvariable=var,
-            font=('Arial', 10),
-            bg=self.theme.colors['bg_primary'],
+            entry_border, textvariable=var,
+            font=('Arial', 10, 'bold'),
+            bg=self.theme.colors['bg_card'],
             fg=self.theme.colors['text_primary'],
-            insertbackground=self.theme.colors['text_primary'],
+            insertbackground=self.theme.colors['accent_cyan'],
             relief='flat',
             borderwidth=0,
             width=width,
             justify='center'
         )
         entry.pack(fill='x', ipady=6)
+        
+        # Add hover and focus effects
+        def on_enter(e):
+            entry_border.config(bg=self.theme.colors['accent_blue'])
+        
+        def on_leave(e):
+            if entry != entry.focus_get():
+                entry_border.config(bg=self.theme.colors['border'])
+        
+        def on_focus_in(e):
+            entry_border.config(bg=self.theme.colors['accent_cyan'])
+        
+        def on_focus_out(e):
+            entry_border.config(bg=self.theme.colors['border'])
+        
+        entry.bind('<Enter>', on_enter)
+        entry.bind('<Leave>', on_leave)
+        entry.bind('<FocusIn>', on_focus_in)
+        entry.bind('<FocusOut>', on_focus_out)
     
     def create_button_panel(self, parent):
         """Create action buttons"""

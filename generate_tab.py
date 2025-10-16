@@ -124,16 +124,30 @@ class GenerateTab:
         )
         label.pack(anchor='w', pady=(0, 8))
         
+        # Create frame for border effect
+        entry_border = tk.Frame(group, bg=self.theme.colors['accent_blue'], padx=2, pady=2)
+        entry_border.pack(fill='x')
+        
         entry = tk.Entry(
-            group, textvariable=self.ghin_var,
-            font=('Arial', 11),
-            bg=self.theme.colors['bg_secondary'],
+            entry_border, textvariable=self.ghin_var,
+            font=('Arial', 12, 'bold'),
+            bg=self.theme.colors['bg_primary'],
             fg=self.theme.colors['text_primary'],
-            insertbackground=self.theme.colors['text_primary'],
+            insertbackground=self.theme.colors['accent_cyan'],
             relief='flat',
             borderwidth=0
         )
-        entry.pack(fill='x', ipady=8, ipadx=10)
+        entry.pack(fill='x', ipady=10, ipadx=12)
+        
+        # Add hover effects
+        def on_enter(e):
+            entry_border.config(bg=self.theme.colors['accent_cyan'])
+        
+        def on_leave(e):
+            entry_border.config(bg=self.theme.colors['accent_blue'])
+        
+        entry.bind('<Enter>', on_enter)
+        entry.bind('<Leave>', on_leave)
     
     def create_results_panel(self):
         """Create the results display panel"""
