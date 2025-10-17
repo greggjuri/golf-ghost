@@ -1,10 +1,22 @@
 # Golf Ghost Analytics 🤖⛳
 
+![Python](https://img.shields.io/badge/Python-3.7+-3776AB?style=flat&logo=python&logoColor=white)
+![Tkinter](https://img.shields.io/badge/Tkinter-GUI-green?style=flat&logo=python&logoColor=white)
+![JSON](https://img.shields.io/badge/JSON-Data-000000?style=flat&logo=json&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-success)
+
 AI-Powered Golf Score Generation System with Sports Analytics Dashboard UI
 
 ## Overview
 
 Golf Ghost Analytics generates realistic golf scores for a "ghost" player based on their GHIN handicap index. Perfect for practice rounds, simulations, or testing golf applications.
+
+### Generate Round Tab
+*Dark analytics theme with color-coded scorecard and real-time statistics*
+
+### Course Management Tab
+*Intuitive hole-by-hole input with individual fields for par, yardage, and handicap*
 
 ## Features
 
@@ -158,6 +170,23 @@ if hole_hcp <= 6:
 ```
 
 ## Technical Details
+
+### Tech Stack
+
+- **Language**: Python 3.7+
+- **GUI Framework**: Tkinter (built-in)
+- **Data Storage**: JSON
+- **Architecture**: Modular MVC-style design
+- **Theme**: Custom dark analytics theme
+
+### Key Technologies
+
+| Technology | Purpose |
+|------------|---------|
+| **tkinter** | Cross-platform GUI framework |
+| **json** | Lightweight course data persistence |
+| **random** | Gaussian distribution for realistic score generation |
+| **ttk** | Themed widget set for modern UI components |
 
 ### Dependencies
 
